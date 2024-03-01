@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="">
+  <head th:include="fragments/head.html :: standard-head" />
+  <body>
+    <div class="d-flex flex-column align-items-start">
+      <div class="alert alert-danger" role="alert">
+        <span th:text="#{oauth2.access-denied.message}" />
+      </div>
+      <a class="btn btn-primary" th:href="${returnUrl}" th:text="#{oauth2.access-denied.return}" />
+    </div>
+    <th:block th:include="fragments/script.html :: body-scripts" />
+  </body>
+</html>

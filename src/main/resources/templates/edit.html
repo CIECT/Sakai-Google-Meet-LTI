@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:include="fragments/head.html :: standard-head" />
+  <body class="container-fluid">
+    <form class="col-lg-8 col-xxl-6" method="POST" th:object="${meeting}" th:action="@{/save}">
+      <div th:each="error : ${errors}" th:text="${error}" class="alert alert-danger" role="alert" />
+      <input type="hidden" th:field="*{id}" />
+      <div class="mb-3">
+        <label th:text="#{label.title}" for="title" />
+        <input id="title" type="text" class="form-control" th:field="*{title}" maxlength="255" required />
+      </div>
+      <div class="mb-3">
+        <label th:text="#{label.description}" for="description" />
+        <textarea id="description" rows="3" class="form-control" th:field="*{description}" maxlength="255" />
+      </div>
+      <div class="mb-3">
+        <label th:text="#{label.start-date}" for="start-date" />
+        <input id="start-date" type="datetime-local" class="form-control" th:field="*{startDate}" required />
+      </div>
+      <div class="mb-3">
+        <label th:text="#{label.end-date}" for="end-date" />
+        <input id="end-date" type="datetime-local" class="form-control" th:field="*{endDate}" required />
+      </div>
+      <button type="submit" class="btn btn-primary" th:text="${isNew} ? #{button.create-meeting} : #{button.update-meeting}" />
+      <a class="btn btn-secondary" href="/index" th:text="#{button.cancel}" />
+    </form>
+    <th:block th:include="fragments/script.html :: body-scripts" />
+  </body>
+</html>

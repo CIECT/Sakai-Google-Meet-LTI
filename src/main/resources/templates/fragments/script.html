@@ -1,0 +1,12 @@
+<template th:fragment="head-scripts">
+</template>
+
+<template th:fragment="body-scripts">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+    if (window.opener) {
+      window.opener.postMessage(window.location.href);
+      window.close();
+    }
+  </script>
+</template>
