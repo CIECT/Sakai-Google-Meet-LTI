@@ -1,7 +1,8 @@
 <template th:fragment="standard-head">
   <title th:text="#{tool.name}" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/webjars/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/webjars/bootstrap-icons/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/styles.css}"/>
   <th:block th:include="fragments/script.html :: head-scripts" />
 </template>

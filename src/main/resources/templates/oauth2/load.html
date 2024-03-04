@@ -20,86 +20,10 @@
         </div>
       </div>
     </div>
+    <script type="module">
+      import Oauth2App from "/js/oauth2-app.js";
+
+      new Oauth2App(document.getElementById("oauth2-app"));
+    </script>
   </body>
-  <script type="module">
-    import { createApp, ref } from "https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.prod.js"
-
-    const popUpWindowName = "oAuth2Popup";
-    const popUpWindowFeatures = "toolbar=no, menubar=no, width=600, height=700, top=100, left=100";
-
-    createApp({
-      setup() {
-        // Input reference
-        const popupUrlInput = ref(null);
-
-        const popupWindow = ref(null);
-        const popupBlocked = ref(false);
-        const popupCheckInterval = ref (null);
-
-        return {
-          popupUrlInput,
-          popupBlocked
-        }
-      },
-      computed: {
-        popupUrl() {
-          return this.popupUrlInput?.value;
-        }
-      },
-      methods: {
-        launchPopup() {
-          const oauth2Url = this.popupUrlInput?.value;
-          if (!oauth2Url) {
-            console.error("No oauth2Url. popupUrlInput: ", this.popupUrlInput);
-            return;
-          }
-
-          this.popupWindow = window.open(oauth2Url, popUpWindowName, popUpWindowFeatures);
-          this.checkPopupBlocked(this.popupWindow)
-          if (!this.popupBlocked) {
-            this.repeatedCheck(true);
-          }
-        },
-        recieveCallbackMessage(messageEvent) {
-          this.clearRepeatedCheck();
-
-          const popupLocation = messageEvent.data;
-
-          if(popupLocation.includes("access_denied")) {
-            this.accessDenied("callback");
-            return;
-          }
-
-          window.location.replace(popupLocation);
-        },
-        checkPopupBlocked(popupWindow) {
-          this.popupBlocked = popupWindow == null || popupWindow.closed || typeof popupWindow.closed == "undefined";
-        },
-        repeatedCheck(isInit) {
-          if (isInit) {
-            this.clearRepeatedCheck();
-            this.popupCheckInterval = setInterval(() => this.repeatedCheck(false), 500);
-          }
-
-          if (this.popupWindow?.closed) {
-            this.accessDenied("check");
-          }
-        },
-        clearRepeatedCheck() {
-          if (this.popupCheckInterval) {
-            clearInterval(this.popupCheckInterval);
-          }
-        },
-        accessDenied() {
-          window.location.replace("/intercept/oauth2/access-denied");
-        }
-      },
-      mounted() {
-        window.addEventListener('message',
-            messageEvent => this.recieveCallbackMessage(messageEvent), false);
-
-        this.launchPopup();
-      }
-    }).mount("#oauth2-app")
-  </script>
 </html>

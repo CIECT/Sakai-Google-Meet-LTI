@@ -8,6 +8,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.format.FormatterRegistry;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import coza.opencollab.meetings.converter.InstantToStringConverter;
@@ -33,12 +34,23 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addConverter(instantToStringConverter);
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/")
+                        .resourceChain(false)
+                ;
+    }
+
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
+
         return messageSource;
     }
 

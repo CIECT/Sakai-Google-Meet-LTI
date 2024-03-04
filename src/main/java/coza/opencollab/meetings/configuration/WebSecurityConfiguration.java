@@ -2,6 +2,7 @@ package coza.opencollab.meetings.configuration;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,8 +21,9 @@ public class WebSecurityConfiguration {
         Lti13Configurer lti13Configurer = new Lti13Configurer();
         http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .antMatchers("/resources/**", "/favicon.ico", "/config.json", "/.well-known/jwks.json", "/js/**")
+                        .antMatchers("/resources/**", "/favicon.ico", "/config.json", "/.well-known/jwks.json", "/js/**", "/webjars/**/")
                                 .permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Client(withDefaults())

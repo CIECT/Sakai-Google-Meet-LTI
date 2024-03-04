@@ -20,7 +20,6 @@ public class StringToInstantConverter implements Converter<String, Instant> {
 
     @Override
     public Instant convert(String localTimeString) {
-        // TODO: Use user time zone
         ZoneId zoneId = ZoneId.systemDefault();
 
         LocalDateTime localDateTime = LocalDateTime.parse(localTimeString, LOCAL_DATE_TIME_FORMATTER);

@@ -19,7 +19,6 @@ public class InstantToStringConverter implements Converter<Instant, String> {
 
     @Override
     public String convert(Instant instant) {
-        // TODO: Use user time zone
         ZoneId zoneId = ZoneId.systemDefault();
         return ZonedDateTime.from(instant.atZone(zoneId)).format(LOCAL_DATE_TIME_FORMATTER);
     }

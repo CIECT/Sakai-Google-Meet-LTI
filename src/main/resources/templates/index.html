@@ -2,17 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head th:include="fragments/head.html :: standard-head" />
   <body>
-    <a th:if="${privilege.canEditMeetings}" href="/edit">Create new Meeting</a>
-    <ul>
-      <li th:each="meeting : ${meetings}">
-        <div class="d-flex gap-1">
-          <span th:text="${meeting.title}"></span>
-          <a th:href="${meeting.url}" target="_blank">Open</a>
-          <a th:if="${privilege.canEditMeetings}" th:href="|/edit/${meeting.id}|">Edit</a>
-          <a th:if="${privilege.canEditMeetings}" th:href="|/delete/${meeting.id}|">Delete</a>
+    <input id="locale" type="hidden" th:value="${locale}"/>
+    <ul class="d-flex flex-wrap list-unstyled gap-2">
+      <li th:if="${privilege.canEditMeetings}" class="card card-meeting align-items-center justify-content-center bg-light">
+        <a class="btn btn-primary" href="/edit">
+          <span class="bi bi-plus-circle" aria-hidden="true"></span>
+          <span th:text="#{button.create-meeting}" />
+        </a>
+      </li>
+      <li th:each="meeting : ${meetings}" class="card card-meeting" data-meeting>
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex gap-1 align-items-start justify-content-between">
+            <h2 class="h3 card-title pb-1 text-truncate flex-grow-1" th:text="${meeting.title}" />
+            <th:block th:if="${privilege.canEditMeetings}">
+              <button class="btn btn-icon" data-bs-toggle="dropdown" th:title="#{button.more-actions}">
+                <span class="bi bi-three-dots-vertical" aria-hidden="true"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <button class="dropdown-item" data-details-modal-trigger
+                      th:attr="data-details-title=|${meeting.title}|,data-details-description=|${meeting.description}|">
+                    <span class="bi bi-info-circle" aria-hidden="true"></span>
+                    <span th:text="#{button.show-details}" />
+                  </button>
+                </li>
+                <li>
+                  <a class="dropdown-item" th:href="|/edit/${meeting.id}|">
+                    <span class="bi bi-pencil" aria-hidden="true"></span>
+                    <span th:text="#{button.edit}" />
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" th:href="|/delete/${meeting.id}|">
+                    <span class="bi bi-trash" aria-hidden="true"></span>
+                    <span th:text="#{button.delete}" />
+                  </a>
+                </li>
+              </ul>
+            </th:block>
+            <button th:unless="${privilege.canEditMeetings}" class="btn btn-icon" th:title="#{button.show-details}"
+                data-details-modal-trigger th:attr="data-details-title=|${meeting.title}|,data-details-description=|${meeting.description}|">
+              <span class="bi bi-info-circle" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="d-flex flex-column justify-content-end mt-auto">
+            <p class="card-subtitle mt-auto mb-2 text-body-secondary text-truncate" th:text="${meeting.description}" />
+            <p class="card-text">
+              <span th:attr="data-date=|${meeting.startDate}|"></span>
+              <span>-</span>
+              <span th:attr="data-date=|${meeting.endDate}|"></span>
+            </p>
+            <div class="d-flex gap-1">
+              <a class="btn btn-primary flex-grow-1" th:href="${meeting.url}" target="_blank">
+                <span th:text="#{button.join}" />
+                <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
+              </a>
+              <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
+                  th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
+                  data-bs-placement="top" data-bs-trigger="manual">
+                <span data-icon-default class="bi bi-clipboard" aria-hidden="true"></span>
+                <span data-icon-copied class="d-none bi bi-clipboard-check" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
+    <div class="modal fade" id="meeting-details-modal" tabindex="-1" aria-labelledby="meeting-details-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="meeting-details-modal-label">
+              <span class="visually-hidden" th:text="#{title.modal.prefix}" />
+              <span data-details-title></span>
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" th:title="#{button.close}"></button>
+          </div>
+          <div class="modal-body">
+              <span data-details-description></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import CopyApp from "/js/copy-app.js";
+      import DetailsModalApp from "/js/details-modal-app.js";
+      import { formatAllDates } from "/js/date-utils.js";
+
+      // Initiate copy buttons
+      document.querySelectorAll("[data-copy-app]").forEach(button => new CopyApp(button));
+
+      // Initiate copy modals
+      const detailsModal = document.getElementById("meeting-details-modal");
+      document.querySelectorAll("[data-details-modal-trigger]").forEach(button => new DetailsModalApp(button, detailsModal));
+
+      // Display dates
+      const locale = document.getElementById("locale").value.replace("_","-");
+      formatAllDates("data-date", locale);
+    </script>
     <th:block th:include="fragments/script.html :: body-scripts" />
   </body>
 </html>

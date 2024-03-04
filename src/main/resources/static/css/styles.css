@@ -1,0 +1,28 @@
+@media (max-width: 576px) {
+  .card-meeting {
+    width: 100% !important;
+  }
+}
+
+.card-meeting {
+  width: 22rem;
+  height:11.5rem
+}
+
+.btn-icon {
+  --bs-btn-color: var(--bs-body-color);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--bs-btn-bg);
+  --bs-btn-hover-color: var(--bs-btn-color);
+  --bs-btn-hover-bg: var(--bs-tertiary-bg);
+  --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
+  --bs-btn-focus-shadow-rgb: var(--bs-dark-rgb);
+  --bs-btn-active-color: var(--bs-white);
+  --bs-btn-active-bg: var(--bs-primary);
+  --bs-btn-active-border-color: var(--bs-btn-active-bg);
+}
+
+/* Hide backrop, because the application is within an iframe */
+.modal-backdrop {
+  --bs-backdrop-bg: transparent;
+}
