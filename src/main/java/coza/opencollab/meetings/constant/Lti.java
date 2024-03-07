@@ -14,6 +14,9 @@ public class Lti {
     public static final String FIELD_LIS_COURSE_OFFERING_SOURCE_ID = "course_offering_sourcedid";
     public static final String FIELD_LIS_COURSE_SECTION_SOURCE_ID = "course_section_sourcedid";
 
+    public static final String CLAIM_RESOURCE_LINK = "https://purl.imsglobal.org/spec/lti/claim/resource_link";
+    public static final String FIELD_RESOURCE_LINK_TITLE = "title";
+
     public static final String FIELD_LOCALE= "locale";
 
     public static final String CLAIM_FULL_NAME = "name";
