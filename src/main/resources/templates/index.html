@@ -4,7 +4,8 @@
   <body>
     <input id="locale" type="hidden" th:value="${locale}"/>
     <ul class="d-flex flex-wrap list-unstyled gap-2">
-      <li th:if="${privilege.canEditMeetings}" class="card card-meeting align-items-center justify-content-center bg-light">
+      <li th:if="${privilege.canEditMeetings}"
+          class="card card-meeting align-items-center justify-content-center bg-light">
         <a class="btn btn-primary" href="/edit">
           <span class="bi bi-plus-circle" aria-hidden="true"></span>
           <span th:text="#{button.create-meeting}" />
@@ -21,7 +22,8 @@
               <ul class="dropdown-menu">
                 <li>
                   <button class="dropdown-item" data-details-modal-trigger
-                      th:attr="data-details-title=|${meeting.title}|,data-details-description=|${meeting.description}|">
+                      th:attr="data-details-title=|${meeting.title}|,
+                          data-details-description=|${meeting.description}|">
                     <span class="bi bi-info-circle" aria-hidden="true"></span>
                     <span th:text="#{button.show-details}" />
                   </button>
@@ -33,15 +35,20 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" th:href="|/delete/${meeting.id}|">
+                  <button class="dropdown-item" data-deletion-modal-trigger
+                      th:attr="data-deletion-id=|${meeting.id}|,
+                          data-deletion-title=|${meeting.title}|,
+                          data-deletion-text=|#{modal.deletion.text}|">
                     <span class="bi bi-trash" aria-hidden="true"></span>
                     <span th:text="#{button.delete}" />
-                  </a>
+                  </button>
                 </li>
               </ul>
             </th:block>
-            <button th:unless="${privilege.canEditMeetings}" class="btn btn-icon" th:title="#{button.show-details}"
-                data-details-modal-trigger th:attr="data-details-title=|${meeting.title}|,data-details-description=|${meeting.description}|">
+            <button th:unless="${privilege.canEditMeetings}" class="btn btn-icon"
+                th:title="#{button.show-details}" data-details-modal-trigger
+                th:attr="data-details-title=|${meeting.title}|,
+                    data-details-description=|${meeting.description}|">
               <span class="bi bi-info-circle" aria-hidden="true"></span>
             </button>
           </div>
@@ -69,7 +76,8 @@
         </div>
       </li>
     </ul>
-    <div class="modal fade" id="meeting-details-modal" tabindex="-1" aria-labelledby="meeting-details-modal-label" aria-hidden="true">
+    <div class="modal fade" id="meeting-details-modal" tabindex="-1"
+        aria-labelledby="meeting-details-modal-label" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content shadow-lg">
           <div class="modal-header">
@@ -77,10 +85,35 @@
               <span class="visually-hidden" th:text="#{title.modal.prefix}" />
               <span data-details-title></span>
             </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" th:title="#{button.close}"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                th:title="#{button.close}"></button>
           </div>
           <div class="modal-body">
               <span data-details-description></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="meeting-deletion-modal" tabindex="-1"
+        aria-labelledby="meeting-deletion-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content shadow-lg">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="meeting-deletion-modal-label">
+              <span th:text="#{modal.deletion.title}" />
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                th:title="#{button.close}"></button>
+          </div>
+          <div class="modal-body bg-warning-subtle text-warning-emphasis">
+            <span data-deletion-text></span>
+          </div>
+          <div class="modal-footer">
+              <a data-deletion-confirm class="btn btn-danger">
+                <span class="bi bi-trash" aria-hidden="true"></span>
+                <span th:text="#{button.delete}" />
+              </a>
+              <button class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}" />
           </div>
         </div>
       </div>
@@ -89,6 +122,7 @@
       import JoinApp from "/js/join-app.js";
       import CopyApp from "/js/copy-app.js";
       import DetailsModalApp from "/js/details-modal-app.js";
+      import DeletionModalApp from "/js/deletion-modal-app.js";
       import { formatAllDates } from "/js/date-utils.js";
 
       // Initiate join buttons
@@ -97,9 +131,15 @@
       // Initiate copy buttons
       document.querySelectorAll("[data-copy-app]").forEach(button => new CopyApp(button));
 
-      // Initiate copy modals
+      // Initiate details modal
       const detailsModal = document.getElementById("meeting-details-modal");
-      document.querySelectorAll("[data-details-modal-trigger]").forEach(button => new DetailsModalApp(button, detailsModal));
+      document.querySelectorAll("[data-details-modal-trigger]")
+          .forEach(button => new DetailsModalApp(button, detailsModal));
+
+      // Initiate deletion modal
+      const deletionModal = document.getElementById("meeting-deletion-modal");
+      document.querySelectorAll("[data-deletion-modal-trigger]")
+          .forEach(button => new DeletionModalApp(button, deletionModal));
 
       // Display dates
       const locale = document.getElementById("locale").value.replace("_","-");

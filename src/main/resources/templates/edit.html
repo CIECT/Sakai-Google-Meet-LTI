@@ -22,7 +22,7 @@
         <input id="end-date" type="datetime-local" class="form-control" th:field="*{endDate}" required />
       </div>
       <button type="submit" class="btn btn-primary">
-        <span id="save-meeting-icon" class="bi bi-plus-circle" aria-hidden="true"></span>
+        <span id="save-meeting-icon" th:class="'bi '+${isNew ? 'bi-plus-circle' : 'bi-pencil'}" aria-hidden="true"></span>
         <span id="save-meeting-spinner" class="d-none spinner-border spinner-border-sm" role="status">
           <span class="visually-hidden" th:text="#{status.saving}" />
         </span>
