@@ -54,7 +54,8 @@
             </p>
           </div>
           <div class="d-flex gap-1 mt-auto">
-            <a class="btn btn-primary flex-grow-1" th:href="${meeting.url}" target="_blank">
+            <a class="btn btn-primary flex-grow-1" th:href="${meeting.url}" target="_blank"
+                data-join-app th:attr="data-start-date=|${meeting.startDate}|">
               <span th:text="#{button.join}" />
               <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
             </a>
@@ -85,9 +86,13 @@
       </div>
     </div>
     <script type="module">
+      import JoinApp from "/js/join-app.js";
       import CopyApp from "/js/copy-app.js";
       import DetailsModalApp from "/js/details-modal-app.js";
       import { formatAllDates } from "/js/date-utils.js";
+
+      // Initiate join buttons
+      document.querySelectorAll("[data-join-app]").forEach(link => new JoinApp(link));
 
       // Initiate copy buttons
       document.querySelectorAll("[data-copy-app]").forEach(button => new CopyApp(button));
