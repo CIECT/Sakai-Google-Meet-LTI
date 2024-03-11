@@ -2,11 +2,13 @@ package coza.opencollab.meetings.model;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -24,6 +26,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @StartDateBeforeEndDate(message = "{error.startdate-before-enddate}")
 public class Meeting {
+
+
+    public static final Comparator<Meeting> BY_START_DATE_ASC = Comparator.comparing(Meeting::getStartDate);
+    public static final Comparator<Meeting> BY_START_DATE_DESC = BY_START_DATE_ASC.reversed();
+    public static final Comparator<Meeting> BY_END_DATE_ASC = Comparator.comparing(Meeting::getEndDate);
+    public static final Comparator<Meeting> BY_END_DATE_DESC = BY_END_DATE_ASC.reversed();
 
 
     @Id
@@ -53,6 +61,7 @@ public class Meeting {
     private Instant startDate;
 
     @Column
+    @FutureOrPresent(message = "{error.enddate-in-past}")
     private Instant endDate;
 
 

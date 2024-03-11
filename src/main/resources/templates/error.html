@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title th:text="#{tool.name}" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
-<body>
-  <p th:text="#{error.sorry}" />
-  <th:block th:include="fragments/script.html :: body-scripts" />
-</body>
+  <head th:include="fragments/head.html :: standard-head" />
+  <body>
+    <div class="alert alert-danger" th:text="#{error.sorry}"/>
+    <a class="btn btn-primary" href="/index" th:text="#{error.return}" />
+    <th:block th:include="fragments/script.html :: body-scripts" />
+  </body>
 </html>

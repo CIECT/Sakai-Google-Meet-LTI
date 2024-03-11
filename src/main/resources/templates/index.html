@@ -45,25 +45,25 @@
               <span class="bi bi-info-circle" aria-hidden="true"></span>
             </button>
           </div>
-          <div class="d-flex flex-column justify-content-end mt-auto">
-            <p class="card-subtitle mt-auto mb-2 text-body-secondary text-truncate" th:text="${meeting.description}" />
-            <p class="card-text">
+          <div class="d-flex flex-column justify-content-end mb-auto gap-2">
+            <p class="card-subtitle text-body-secondary text-truncate" th:text="${meeting.description}" />
+            <p class="card-text d-flex flex-wrap">
               <span th:attr="data-date=|${meeting.startDate}|"></span>
-              <span>-</span>
+              <span class="mx-1">-</span>
               <span th:attr="data-date=|${meeting.endDate}|"></span>
             </p>
-            <div class="d-flex gap-1">
-              <a class="btn btn-primary flex-grow-1" th:href="${meeting.url}" target="_blank">
-                <span th:text="#{button.join}" />
-                <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
-              </a>
-              <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
-                  th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
-                  data-bs-placement="top" data-bs-trigger="manual">
-                <span data-icon-default class="bi bi-clipboard" aria-hidden="true"></span>
-                <span data-icon-copied class="d-none bi bi-clipboard-check" aria-hidden="true"></span>
-              </button>
-            </div>
+          </div>
+          <div class="d-flex gap-1 mt-auto">
+            <a class="btn btn-primary flex-grow-1" th:href="${meeting.url}" target="_blank">
+              <span th:text="#{button.join}" />
+              <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
+            </a>
+            <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
+                th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
+                data-bs-placement="top" data-bs-trigger="manual">
+              <span data-icon-default class="bi bi-clipboard" aria-hidden="true"></span>
+              <span data-icon-copied class="d-none bi bi-clipboard-check" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </li>

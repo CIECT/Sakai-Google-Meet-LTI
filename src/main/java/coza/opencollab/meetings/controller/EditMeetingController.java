@@ -9,10 +9,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import coza.opencollab.meetings.constant.OAuth2Client;
 import coza.opencollab.meetings.constant.Template;
+import coza.opencollab.meetings.exception.BadRequestException;
+import coza.opencollab.meetings.model.Function;
 import coza.opencollab.meetings.model.Meeting;
 import coza.opencollab.meetings.service.AuthorizedMeetingService;
 import coza.opencollab.meetings.service.UnauthorizedMeetingService;
@@ -39,20 +39,16 @@ public class EditMeetingController extends BaseController {
     private UnauthorizedMeetingService unauthorizedMeetingService;
 
 
-    @ExceptionHandler(BindException.class)
-    public String handleInvalidMeeting() {
-        return Template.EDIT;
-        //
-    }
-
     @GetMapping({"/edit", "/edit/{meetingId}"})
     public String editMeeting(Model model, @PathVariable(required = false) String meetingId,
             @RegisteredOAuth2AuthorizedClient(OAuth2Client.GOOGLE_CODE) OAuth2AuthorizedClient authorizedClient) {
 
+        checkPriviledge(Function.EDIT_MEETINGS);
+
         Meeting meeting = StringUtils.isBlank(meetingId)
                 ? Meeting.template()
                 : unauthorizedMeetingService.getMeeting(meetingId)
-                        .orElseThrow(() -> new IllegalArgumentException("Can not edit meeting with invalid Id"));
+                        .orElseThrow(BadRequestException::new);
 
         model.addAttribute(ATTRIBUTE_IS_NEW, meeting.getId() == null);
         model.addAttribute(ATTRIBUTE_MEETING, meeting);
@@ -64,6 +60,8 @@ public class EditMeetingController extends BaseController {
     public String saveMeeting(Model model,
             @Valid @ModelAttribute(ATTRIBUTE_MEETING) Meeting meeting, BindingResult bindingResult,
             @RegisteredOAuth2AuthorizedClient(OAuth2Client.GOOGLE_CODE) OAuth2AuthorizedClient authorizedClient) {
+
+        checkPriviledge(Function.EDIT_MEETINGS);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute(ATTRIBUTE_ERRORS, bindingResult.getAllErrors().stream()
@@ -80,7 +78,7 @@ public class EditMeetingController extends BaseController {
         // We need to add the fields that are not part of the form
         if (StringUtils.isNotBlank(meetingId)) {
             Meeting originalMeeting = meetingService.getMeeting(meetingId)
-                    .orElseThrow(() -> new IllegalArgumentException("Can not save meeting id that does not exist"));
+                    .orElseThrow(BadRequestException::new);
 
             meeting.setExternalId(originalMeeting.getExternalId());
             meeting.setUrl(originalMeeting.getUrl());
@@ -91,6 +89,10 @@ public class EditMeetingController extends BaseController {
         // Add the siteId, it's not part of the form
         meeting.setSiteId(ContextUtil.getCurrentSiteId().orElseThrow(IllegalStateException::new));
 
+        // Trim title and description
+        meeting.setTitle(StringUtils.trimToNull(meeting.getTitle()));
+        meeting.setDescription(StringUtils.trimToNull(meeting.getDescription()));
+
         meetingService.saveMeeting(meeting);
 
         return Redirect.to("/index");
@@ -99,6 +101,8 @@ public class EditMeetingController extends BaseController {
     @GetMapping("/delete/{meetingId}")
     public String deleteMeeting(@ModelAttribute(ATTRIBUTE_MEETING) Meeting meeting, @PathVariable @NonNull String meetingId,
             @RegisteredOAuth2AuthorizedClient(OAuth2Client.GOOGLE_CODE) OAuth2AuthorizedClient authorizedClient) {
+
+        checkPriviledge(Function.EDIT_MEETINGS);
 
         AuthorizedMeetingService meetingService = unauthorizedMeetingService.authorized(authorizedClient);
 

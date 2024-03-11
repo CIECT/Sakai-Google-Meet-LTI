@@ -1,5 +1,7 @@
 package coza.opencollab.meetings.service.impl;
 
+import javax.persistence.EntityManager;
+
 import coza.opencollab.meetings.model.Meeting;
 import coza.opencollab.meetings.provider.MeetingProvider;
 import coza.opencollab.meetings.repository.MeetingRepository;
@@ -10,8 +12,12 @@ public class AuthorizedMeetingServiceImpl extends BasicMeetingServiceImpl implem
 
     private final MeetingProvider meetingProvider;
 
-    public AuthorizedMeetingServiceImpl(MeetingRepository meetingRepository, MeetingProvider meetingProvider) {
-        super(meetingRepository);
+    public AuthorizedMeetingServiceImpl(
+            EntityManager entityManager,
+            MeetingRepository meetingRepository,
+            MeetingProvider meetingProvider) {
+
+        super(entityManager, meetingRepository);
         this.meetingProvider = meetingProvider;
     }
 
@@ -43,7 +49,7 @@ public class AuthorizedMeetingServiceImpl extends BasicMeetingServiceImpl implem
     @Override
     public void deleteMeeting(@NonNull String meetingId) {
         if (!meetingExists(meetingId)) {
-            throw new IllegalArgumentException("No meeting with meetingId ["+ meetingId + "] exists");
+            throw new IllegalArgumentException("No meeting with meetingId [" + meetingId + "] exists");
         }
 
         meetingRepository.deleteById(meetingId);

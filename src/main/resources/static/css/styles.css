@@ -5,8 +5,8 @@
 }
 
 .card-meeting {
-  width: 22rem;
-  height:11.5rem
+  width: 24rem;
+  min-height:11.5rem
 }
 
 .btn-icon {
