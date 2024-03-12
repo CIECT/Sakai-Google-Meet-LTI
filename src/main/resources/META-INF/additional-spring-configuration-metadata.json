@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "meetings.max-count",
+      "type": "java.lang.Integer",
+      "description": "The maximum number of meetings to be displayed on the main screen"
+    }
+  ]
+}

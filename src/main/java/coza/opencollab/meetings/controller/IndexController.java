@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,9 @@ public class IndexController extends BaseController {
     @Autowired
     UnauthorizedMeetingService meetingService;
 
+    @Value("${meetings.max-count: 50}")
+    private Integer meetingsMaxCount;
+
 
     @GetMapping({"/", "/index"})
     public String index(Model model) {
@@ -31,6 +35,7 @@ public class IndexController extends BaseController {
 
         Set<Meeting> meetings = meetingService.streamPendingMeetingsForSite(siteId)
                 .sorted(Meeting.BY_START_DATE_ASC.thenComparing(Meeting.BY_END_DATE_ASC))
+                .limit(meetingsMaxCount)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
         model.addAttribute("meetings", meetings);
