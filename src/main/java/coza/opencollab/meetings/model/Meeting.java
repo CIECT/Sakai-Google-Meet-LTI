@@ -65,6 +65,18 @@ public class Meeting {
     private Instant endDate;
 
 
+    public Boolean getActive() {
+        Instant now = Instant.now();
+
+        // If start date is null, it must have started already
+        boolean started = startDate == null || startDate.isBefore(now);
+
+        // If end date is null, it's an never ending meeting
+        boolean ended = endDate != null && endDate.isBefore(now);
+
+        return started && !ended;
+    }
+
     public static Meeting template() {
         return Meeting.builder()
                 .startDate(Instant.now())

@@ -59,11 +59,7 @@
           </p>
         </div>
         <div class="d-flex gap-1 mt-auto">
-          <a class="btn btn-primary disabled flex-grow-1" th:href="${meeting.url}" target="_blank"
-              data-join-app th:attr="data-start-date=|${meeting.startDate}|">
-            <span th:text="#{button.join}" />
-            <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
-          </a>
+          <th:block th:include="this :: join-button(meeting = ${meeting})" />
           <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
               th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
               data-bs-placement="top" data-bs-trigger="manual">
@@ -137,11 +133,7 @@
           </p>
         </div>
         <div class="d-flex gap-1 mt-auto">
-          <a class="btn btn-primary flex-grow-1" th:href="${meeting.url}" target="_blank"
-              data-join-app th:attr="data-start-date=|${meeting.startDate}|">
-            <span th:text="#{button.join}" />
-            <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
-          </a>
+          <th:block th:include="this :: join-button(meeting = ${meeting})" />
           <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
               th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
               data-bs-placement="top" data-bs-trigger="manual">
@@ -152,6 +144,19 @@
       </div>
     </li>
   </ul>
+</template>
+
+<template th:fragment="join-button(meeting)" >
+  <th:block th:with="btnVariant = ${view != 'past'} ? 'btn-primary' : 'btn-danger'">
+    <a th:if="${meeting.active}" th:class="'btn ' + ${btnVariant} + ' flex-grow-1'" th:href="${meeting.url}" target="_blank">
+      <span th:text="#{button.join}" />
+      <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
+    </a>
+    <button th:unless="${meeting.active}" th:class="'btn ' + ${btnVariant} + ' flex-grow-1'" disabled>
+      <span th:text="#{button.join}" />
+      <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
+    </button>
+  </th:block>
 </template>
 
 <!-- Fragment no meetings banner that adjusts to view -->

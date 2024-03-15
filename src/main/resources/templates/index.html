@@ -56,14 +56,10 @@
       </div>
     </div>
     <script type="module">
-      import JoinApp from "/js/join-app.js";
       import CopyApp from "/js/copy-app.js";
       import DetailsModalApp from "/js/details-modal-app.js";
       import DeletionModalApp from "/js/deletion-modal-app.js";
       import { formatAllDates } from "/js/date-utils.js";
-
-      // Initiate join buttons
-      document.querySelectorAll("[data-join-app]").forEach(link => new JoinApp(link));
 
       // Initiate copy buttons
       document.querySelectorAll("[data-copy-app]").forEach(button => new CopyApp(button));
