@@ -24,6 +24,7 @@ public class OAuth2Controller {
                 .toUri();
 
         model.addAttribute("redirect", uri);
+        model.addAttribute("returnUrl", "/index");
 
         return Template.OAUTH2_LOAD;
     }

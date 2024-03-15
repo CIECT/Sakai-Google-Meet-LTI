@@ -4,7 +4,7 @@
   <body>
     <div id="oauth2-app">
       <input ref="popupUrlInput" type="hidden" th:value="${redirect}" />
-      <div v-if="popupBlocked" class="d-flex">
+      <div v-if="popupBlocked" class="d-flex mb-2">
         <div class="alert alert-primary mb-0 rounded-end-0" role="alert">
           <span th:text="#{oauth2.popup-blocked(#{oauth2.retry})}" />
         </div>
@@ -20,6 +20,7 @@
         </div>
       </div>
     </div>
+    <a class="btn btn-secondary" th:href="${returnUrl}" th:text="#{oauth2.return}" />
     <script type="module">
       import Oauth2App from "/js/oauth2-app.js";
 

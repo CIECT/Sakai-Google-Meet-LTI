@@ -6,7 +6,7 @@
       <div class="alert alert-danger" role="alert">
         <span th:text="#{oauth2.access-denied.message}" />
       </div>
-      <a class="btn btn-primary" th:href="${returnUrl}" th:text="#{oauth2.access-denied.return}" />
+      <a class="btn btn-primary" th:href="${returnUrl}" th:text="#{oauth2.return}" />
     </div>
     <th:block th:include="fragments/script.html :: body-scripts" />
   </body>
