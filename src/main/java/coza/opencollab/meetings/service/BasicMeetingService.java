@@ -13,5 +13,7 @@ public interface BasicMeetingService {
 
     public Stream<Meeting> streamPendingMeetingsForSite(String siteId);
 
+    public Stream<Meeting> streamPastMeetingsForSite(String siteId);
+
     public Optional<Meeting> getMeeting(String meetingId);
 }

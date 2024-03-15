@@ -43,6 +43,16 @@ public class BasicMeetingServiceImpl implements BasicMeetingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Stream<Meeting> streamPastMeetingsForSite(String siteId) {
+        Instant now = Instant.now();
+
+        return meetingRepository.findBySiteId(siteId)
+                .peek(entityManager::detach)
+                .filter(meeting -> isPastMeeting(now, meeting));
+    }
+
+    @Override
     public Optional<Meeting> getMeeting(@NonNull String meetingId) {
         return meetingRepository.findById(meetingId);
     }

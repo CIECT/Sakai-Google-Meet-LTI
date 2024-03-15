@@ -4,9 +4,12 @@
   }
 }
 
-.card-meeting {
+.card-meeting-grid {
   width: 24rem;
   min-height:11.5rem
+}
+.card-meeting-list {
+  min-height: 5rem
 }
 
 .btn-icon {
@@ -25,4 +28,9 @@
 /* Hide backrop, because the application is within an iframe */
 .modal-backdrop {
   --bs-backdrop-bg: transparent;
+}
+
+.btn-primary {
+  --bs-btn-disabled-bg: #6c757d;
+  --bs-btn-disabled-border-color: #6c757d;
 }

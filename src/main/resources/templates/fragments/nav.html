@@ -1,0 +1,55 @@
+<!-- Fragment for view navigation -->
+<template th:fragment="nav-view">
+  <nav th:attr="aria-label=|#{nav.view.label}|">
+    <ul class="nav nav-pills mb-2 d-flex justify-content-between">
+      <th:block th:include="this :: item(
+        title = #{nav.view.upcomming},
+        action = 'viewFuture',
+        active = ${view == 'future'},
+        icon = 'calendar-date',
+        ariaCurrent = 'page',
+      )" />
+      <th:block th:include="this :: item(
+        title = #{nav.view.past},
+        action = 'viewPast',
+        active = ${view == 'past'},
+        icon = 'clock-history',
+        ariaCurrent = 'page',
+      )" />
+    </ul>
+  </nav>
+</template>
+
+<!-- Fragment for layout navigation -->
+<template th:fragment="nav-layout">
+  <nav th:attr="aria-label=|#{nav.layout.label}|">
+    <ul class="nav nav-pills mb-2 d-flex justify-content-between">
+      <th:block th:include="this :: item(
+        title = #{nav.layout.list},
+        action = 'layoutList',
+        active = ${layout == 'list'},
+        icon = 'list',
+        ariaCurrent = 'true',
+      )" />
+      <th:block th:include="this :: item(
+        title = #{nav.layout.grid},
+        action = 'layoutGrid',
+        active = ${layout == 'grid'},
+        icon = 'grid',
+        ariaCurrent = 'true',
+      )" />
+    </ul>
+  </nav>
+</template>
+
+<!-- Fragment for nav items -->
+<template th:fragment="item(title, action, active, icon, ariaCurrent)">
+  <li class="nav-item">
+    <a th:class="'nav-link flex-grow-1 ' + ${active ? 'active' : ''}"
+        th:attr="aria-current=|${active ? ariaCurrent : 'false'}|"
+        th:href="'/index?action=' + ${action}">
+      <span th:class="'bi bi-' + ${icon}" aria-hidden="true"></span>
+      <span th:text="${title}" />
+    </a>
+  </li>
+</template>

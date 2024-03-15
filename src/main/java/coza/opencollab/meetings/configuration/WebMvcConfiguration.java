@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import coza.opencollab.meetings.converter.InstantToStringConverter;
+import coza.opencollab.meetings.converter.StringToActionConverter;
 import coza.opencollab.meetings.converter.StringToInstantConverter;
 
 
@@ -27,11 +28,15 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Autowired
     private InstantToStringConverter instantToStringConverter;
 
+    @Autowired
+    private StringToActionConverter stringToActionConverter;
+
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(stringToInstantConverter);
         registry.addConverter(instantToStringConverter);
+        registry.addConverter(stringToActionConverter);
     }
 
     @Override
