@@ -1,7 +1,7 @@
 <!-- Fragment for view navigation -->
 <template th:fragment="nav-view">
   <nav th:attr="aria-label=|#{nav.view.label}|">
-    <ul class="nav nav-pills mb-2 d-flex justify-content-between">
+    <ul class="nav nav-pills">
       <th:block th:include="this :: item(
         title = #{nav.view.upcomming},
         action = 'viewFuture',
@@ -23,7 +23,7 @@
 <!-- Fragment for layout navigation -->
 <template th:fragment="nav-layout">
   <nav th:attr="aria-label=|#{nav.layout.label}|">
-    <ul class="nav nav-pills mb-2 d-flex justify-content-between">
+    <ul class="nav nav-pills justify-content-end">
       <th:block th:include="this :: item(
         title = #{nav.layout.list},
         action = 'layoutList',

@@ -1,5 +1,6 @@
 <!-- Fragment for meetings list view -->
 <template th:fragment="list(create, meetings)">
+
   <th:block th:if="${meetings.size == 0 && !create}" th:include="this :: no-meetings" />
   <ul class="d-flex flex-column list-unstyled gap-2">
     <li th:if="${create && privilege.canEditMeetings}"
@@ -10,11 +11,28 @@
       </a>
     </li>
     <li th:each="meeting : ${meetings}" class="card card-meeting-list" data-meeting>
-      <div class="card-body d-flex flex-column">
-        <div class="d-flex gap-1 align-items-start justify-content-between">
-          <h2 class="h3 card-title pb-1 text-truncate flex-grow-1" th:text="${meeting.title}" />
+      <div class="card-body d-flex flex-wrap justify-content-between gap-2">
+        <div class="meeting-header d-flex flex-column gap-1">
+          <h2 class="fs-5 card-title mb-0 text-truncate" th:text="${meeting.title}" />
+          <p class="card-subtitle text-body-secondary text-truncate" th:text="${meeting.description}" />
+        </div>
+        <p class="card-text d-flex flex-column mb-0">
+          <span class="text-nowrap">
+            <span th:attr="data-date=|${meeting.startDate}|"></span>
+            <span class="">-</span>
+          </span>
+          <span th:attr="data-date=|${meeting.endDate}|"></span>
+        </p>
+        <div class="d-flex gap-1 align-items-center dropup">
+          <th:block th:include="this :: join-button(meeting = ${meeting})" />
+          <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
+              th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
+              data-bs-placement="top" data-bs-trigger="manual">
+            <span data-icon-default class="bi bi-clipboard" aria-hidden="true"></span>
+            <span data-icon-copied class="d-none bi bi-clipboard-check" aria-hidden="true"></span>
+          </button>
           <th:block th:if="${privilege.canEditMeetings}">
-            <button class="btn btn-icon" data-bs-toggle="dropdown" th:title="#{button.more-actions}">
+            <button class="btn btn-secondary" data-bs-toggle="dropdown" th:title="#{button.more-actions}">
               <span class="bi bi-three-dots-vertical" aria-hidden="true"></span>
             </button>
             <ul class="dropdown-menu">
@@ -43,28 +61,11 @@
               </li>
             </ul>
           </th:block>
-          <button th:unless="${privilege.canEditMeetings}" class="btn btn-icon"
+          <button th:unless="${privilege.canEditMeetings}" class="btn btn-secondary"
               th:title="#{button.show-details}" data-details-modal-trigger
               th:attr="data-details-title=|${meeting.title}|,
                   data-details-description=|${meeting.description}|">
             <span class="bi bi-info-circle" aria-hidden="true"></span>
-          </button>
-        </div>
-        <div class="d-flex flex-column justify-content-end mb-auto gap-2">
-          <p class="card-subtitle text-body-secondary text-truncate" th:text="${meeting.description}" />
-          <p class="card-text d-flex flex-wrap">
-            <span th:attr="data-date=|${meeting.startDate}|"></span>
-            <span class="mx-1">-</span>
-            <span th:attr="data-date=|${meeting.endDate}|"></span>
-          </p>
-        </div>
-        <div class="d-flex gap-1 mt-auto">
-          <th:block th:include="this :: join-button(meeting = ${meeting})" />
-          <button class="btn btn-secondary" th:title="#{button.copy-link}" data-copy-app
-              th:attr="data-url=|${meeting.url}|,data-popover-content=|#{status.copied-link}|"
-              data-bs-placement="top" data-bs-trigger="manual">
-            <span data-icon-default class="bi bi-clipboard" aria-hidden="true"></span>
-            <span data-icon-copied class="d-none bi bi-clipboard-check" aria-hidden="true"></span>
           </button>
         </div>
       </div>
@@ -86,7 +87,7 @@
     <li th:each="meeting : ${meetings}" class="card card-meeting-grid" data-meeting>
       <div class="card-body d-flex flex-column">
         <div class="d-flex gap-1 align-items-start justify-content-between">
-          <h2 class="h3 card-title pb-1 text-truncate flex-grow-1" th:text="${meeting.title}" />
+          <h2 class="fs-5 card-title pb-1 text-truncate flex-grow-1" th:text="${meeting.title}" />
           <th:block th:if="${privilege.canEditMeetings}">
             <button class="btn btn-icon" data-bs-toggle="dropdown" th:title="#{button.more-actions}">
               <span class="bi bi-three-dots-vertical" aria-hidden="true"></span>
@@ -148,11 +149,11 @@
 
 <template th:fragment="join-button(meeting)" >
   <th:block th:with="btnVariant = ${view != 'past'} ? 'btn-primary' : 'btn-danger'">
-    <a th:if="${meeting.active}" th:class="'btn ' + ${btnVariant} + ' flex-grow-1'" th:href="${meeting.url}" target="_blank">
+    <a th:if="${meeting.active}" th:class="'btn ' + ${btnVariant} + ' flex-grow-1 text-nowrap'" th:href="${meeting.url}" target="_blank">
       <span th:text="#{button.join}" />
       <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
     </a>
-    <button th:unless="${meeting.active}" th:class="'btn ' + ${btnVariant} + ' flex-grow-1'" disabled>
+    <button th:unless="${meeting.active}" th:class="'btn ' + ${btnVariant} + ' flex-grow-1 text-nowrap'" disabled>
       <span th:text="#{button.join}" />
       <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span>
     </button>

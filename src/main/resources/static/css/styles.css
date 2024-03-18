@@ -1,13 +1,8 @@
-@media (max-width: 576px) {
-  .card-meeting {
-    width: 100% !important;
-  }
-}
-
 .card-meeting-grid {
   width: 24rem;
   min-height:11.5rem
 }
+
 .card-meeting-list {
   min-height: 5rem
 }
@@ -33,4 +28,29 @@
 .btn-primary {
   --bs-btn-disabled-bg: #6c757d;
   --bs-btn-disabled-border-color: #6c757d;
+}
+
+/* xs */
+@media (max-width: 576px) {
+  .card-meeting {
+    width: 100% !important;
+  }
+
+  .card-meeting-list .meeting-header {
+    width: 100%;
+  }
+}
+
+/* sm up */
+@media (min-width: 576px) {
+  .card-meeting-list .meeting-header {
+    width: 25%;
+  }
+}
+
+/* lg up */
+@media (min-width: 992px) {
+  .card-meeting-list .meeting-header {
+    width: 50%;
+  }
 }
