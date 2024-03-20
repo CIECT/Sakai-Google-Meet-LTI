@@ -33,5 +33,8 @@ config/application.properties
 config/application-ssl.properties
 pom.xml.releaseBackup
 release.properties
-*.jks
-*.p12
+
+### Config ###
+config/*.jks
+config/*.p12
+config/application.properties

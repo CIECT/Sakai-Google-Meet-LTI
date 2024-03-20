@@ -4,6 +4,16 @@
       "name": "meetings.max-count",
       "type": "java.lang.Integer",
       "description": "The maximum number of meetings to be displayed on the main screen"
+    },
+    {
+      "name": "lti.jwk.location",
+      "type": "java.lang.String",
+      "description": "Location of keystore file for JWT"
+    },
+    {
+      "name": "lti.jwk.password",
+      "type": "java.lang.String",
+      "description": "Password of keystore file for JWT"
     }
   ]
 }

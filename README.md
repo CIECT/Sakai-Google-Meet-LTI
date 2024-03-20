@@ -2,30 +2,27 @@
 
 This is an LTI 1.3 tool to mange meetings for the Google Meet platform.
 
-## TLS Setup (development)
+## Prerequisites
+* A database - project supports mariadb by default
+* Java 17 (check `java --version`)
+* Maven (check `mvn --version`)
 
-To setup TLS in a development environment it's recommended that you install [mkcert](https://github.com/FiloSottile/mkcert) which will install a trusted root certificate and then allow a certificate to be generated for localhost. Once installed run this in the root of the project:
-```
-mkcert -pkcs12 -p12-file config/keystore.p12 localhost
-```
+## Local setup (development)
 
-You might have to run the following command so your browsers trust the certificate:
-```
-mkcert -install
-```
+* Create a copy of `config/_application.properties` at `config/application.properties`
+  * `cp config/_application.properties config/application.properties`
+* Open the copy and insert configuration values (see comments)
+* Review the script `config/setup.sh`, make it executable and run it
+* Build project `mvn clean install`
+* Start application `mvn spring-boot:run`
 
-Then start the application with the ssl profile enabled and the LTI tool should be accessible on https://localhost:8443/
+## Prodction setup
 
-## LTI 1.3 Setup
+Production setup will be similar to the local setup with differences when setting up certificates and keypairs.
 
-For LTI 1.3 a public/private keypair is needed. To generate one for development use:
-
-    keytool -genkeypair \
-      -alias jwt \
-      -keyalg RSA \
-      -keystore config/jwk.jks \
-      -storepass store-pass \
-      -dname CN=development
+* TLS can be configured using the spring-boot SSL support https://www.baeldung.com/spring-boot-https-self-signed-certificate
+* To generate a keypair for the JWT involved in LTI authentification
+`keytool -genkeypair -alias jwt -keyalg RSA -keystore config/jwk-keystore.jks ...` with appropiate options can be used
 
 ## Google setup
 * [Create a new google cloud project](https://support.google.com/googleapi/answer/6251787#zippy=%2Ccreate-a-project)
