@@ -11,7 +11,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import coza.opencollab.meetings.constant.OAuth2Client;
 import coza.opencollab.meetings.constant.Template;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class OAuth2Controller {
 
@@ -22,6 +24,8 @@ public class OAuth2Controller {
                 .queryParams(params)
                 .build()
                 .toUri();
+
+        log.debug("Oauth2 uri: {}", uri);
 
         model.addAttribute("redirect", uri);
         model.addAttribute("returnUrl", "/index");
