@@ -50,8 +50,7 @@ public class EditMeetingController extends BaseController {
                 : unauthorizedMeetingService.getMeeting(meetingId)
                         .orElseThrow(BadRequestException::new);
 
-        model.addAttribute(ATTRIBUTE_IS_NEW, meeting.getId() == null);
-        model.addAttribute(ATTRIBUTE_MEETING, meeting);
+        addEditAttributes(model, meeting);
 
         return Template.EDIT;
     }
@@ -67,6 +66,8 @@ public class EditMeetingController extends BaseController {
             model.addAttribute(ATTRIBUTE_ERRORS, bindingResult.getAllErrors().stream()
                     .map(ObjectError::getDefaultMessage)
                     .toList());
+
+            addEditAttributes(model, meeting);
 
             return Template.EDIT;
         }
@@ -109,5 +110,10 @@ public class EditMeetingController extends BaseController {
         meetingService.deleteMeeting(meetingId);
 
         return Redirect.to("/index");
+    }
+
+    private void addEditAttributes(Model model, Meeting meeting) {
+        model.addAttribute(ATTRIBUTE_IS_NEW, meeting.getId() == null);
+        model.addAttribute(ATTRIBUTE_MEETING, meeting);
     }
 }
