@@ -19,7 +19,7 @@ This is an LTI 1.3 tool to mange meetings for the Google Meet platform.
 * In Sakai, open the Administration Workspace > External Tools
 * Click on `Install LTI 1.x Tool`
 * Set the tool title and button text
-* Set Launch URL to `https://<toolhostURL:8443/`
+* Set Launch URL to `https://<toolhostURL>:8443/`
 * Set the Launch secret - A secret key you have to choose (e.g. super-secret-client-secret)
 * Select `Tool supports LTI 1.3`
 * Set LTI 1.3 Tool Keyset URL to `https://<toolhostURL>:8443/.well-known/jwks.json`
