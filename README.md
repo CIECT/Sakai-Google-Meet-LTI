@@ -37,11 +37,11 @@ spring.security.oauth2.client.registration.sakai.client-secret=super-secret-clie
 ```
 * Also set the following url properties for the provider configuration found on the view in Sakai (Example values below)
 ```
-### LTI 1.3 Platform OAuth2 Well-Known/KeySet URL
+### LTI 1.3 Platform OIDC Authentication URL
 spring.security.oauth2.client.provider.sakai.authorization-uri=http://localhost:8080/imsoidc/lti13/oidc_auth
 ### LTI 1.3 Platform OAuth2 Bearer Token Retrieval URL
 spring.security.oauth2.client.provider.sakai.token-uri=http://localhost:8080/imsblis/lti13/token/1
-### LTI 1.3 Platform OIDC Authentication URL
+### LTI 1.3 Platform OAuth2 Well-Known/KeySet URL
 spring.security.oauth2.client.provider.sakai.jwk-set-uri=http://localhost:8080/imsblis/lti13/keyset
 ```
 
